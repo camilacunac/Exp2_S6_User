@@ -90,6 +90,10 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<User> user = userRepository.findById(idUser);
             if (user.isPresent()) {
+                if (!isValidRole(role.getRole())) {
+                    res = new Response("error", "", "El role ingresado no es valido");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+                }
                 User updatedUser = user.get();
                 updatedUser.setRole(role.getRole());
                 User savedUser = userRepository.save(updatedUser);
